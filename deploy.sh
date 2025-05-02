@@ -6,15 +6,20 @@ set -exu
 #!/usr/bin/bash
 # ARGS: $1="-u|-g" $2="id"
 # NOTE: max id range is assumed signed int ~2,147,483,647
-# use same range for "subuid -u" and "subgid -g"
-# assume no environment
+# im using same range for "subuid -u" and "subgid -g"
+# set PATH because we assume no environment
 PATH=/usr/bin:$PATH
 # sanitize user
 id=$(id -u "$2") || exit 9
-##-- basic: offset="$(($id + 1000000000))"
-##-- advanced using hash of id to reduce overlap in range of one billion
+# advanced offset using hash of id to reduce overlap in range of one billion
 offset="1$(printf "%09u" "0x$(echo "$id"|md5sum|head -c16)"|tail -c9)"
 echo "$id:$offset:65536"
+# to include records from /etc/subuid /etc/subgid
+# f=/etc/su${1//-/}bid
+# test -e "$f" && {
+#     grep "^$id:" "$f"
+#     grep "^$(id --name -u "$2"):" "$f"
+# }
 EOF
 chmod +x /usr/local/sbin/nss_dynsubid
 
