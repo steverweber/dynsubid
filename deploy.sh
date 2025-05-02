@@ -18,7 +18,7 @@ echo "$id:$offset:65536"
 # f=/etc/su${1//-/}bid
 # test -e "$f" && {
 #     grep "^$id:" "$f"
-#     grep "^$(id --name -u "$2"):" "$f"
+#     grep "^$(id --name -u "$2"):" "$f" #UNSAFE_REGEX
 # }
 EOF
 chmod +x /usr/local/sbin/nss_dynsubid
