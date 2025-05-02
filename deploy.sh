@@ -3,10 +3,12 @@ set -exu
 
 # Example that returns an offset between 1000000000 and 2000000000
 <<'EOF' cat > /usr/local/sbin/nss_dynsubid
-#!/usr/bin/env bash
+#!/usr/bin/bash
 # ARGS: $1="-u|-g" $2="id"
-# NOTE: max id range is ~2,147,483,647
-# use same range for subuid -u and subgid -g
+# NOTE: max id range is assumed signed int ~2,147,483,647
+# use same range for "subuid -u" and "subgid -g"
+# assume no environment
+PATH=/usr/bin:$PATH
 # sanitize user
 id=$(id -u "$2") || exit 9
 ##-- basic: offset="$(($id + 1000000000))"
