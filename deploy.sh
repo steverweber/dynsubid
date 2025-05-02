@@ -15,7 +15,7 @@ id=$(id -u "$2") || exit 9
 offset="1$(printf "%09u" "0x$(echo "$id"|md5sum|head -c16)"|tail -c9)"
 echo "$id:$offset:65536"
 # to include records from /etc/subuid /etc/subgid
-# f=/etc/su${1//-/}bid
+# f=/etc/sub${1//-/}id
 # test -e "$f" && {
 #     grep "^$id:" "$f"
 #     grep "^$(id --name -u "$2"):" "$f" #UNSAFE_REGEX
