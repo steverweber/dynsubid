@@ -1,6 +1,11 @@
 The job of this tool is to remove the need to manage /etc/subuid and subgid for HPC servers
 when they already have shared uid and gid provided by another system like SSSD or LDAP.
 
+installing
+----------
+
+    bash ./deploy.sh
+
 testing
 -------
 
@@ -13,12 +18,11 @@ testing
 how it works
 ------------
 
- - tools like `getsubids` use nss to resolve subids.
- - tools also include podman and apptainer
  - `/etc/nsswitch.conf` supports `subid`
- - the `libsubid_dynsubid.c` program runs `/usr/local/sbin/nss_dynsubid` to do lookups
- - `/usr/local/sbin/nss_dynsubid` can be a basic shell script or whatever... query a DB 
-
+ - we create `libsubid_dynsubid` that is used in `/etc/nsswitch.conf`
+ - `libsubid_dynsubid.c` runs `/usr/local/sbin/nss_dynsubid` to do lookups (basic bash script)
+ - tools like `getsubids` use nss to resolve subids using the `nss_dynsubid` bash script
+ - other apps `podman` and `apptainer` also have nss support
 
 The shell script used in the example `deploy.sh` does some cleaver things that are not 100% safe! Some users could have overlaped ranges.
 
